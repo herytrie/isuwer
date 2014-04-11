@@ -3,7 +3,7 @@ session_start();
 include ("includes/db.php");
 
 $email=$_POST['email'];
-$password=$_POST['password'];
+$password=md5($_POST['password']);
 
 if(!empty($email) && !empty($password))
 

@@ -4,12 +4,13 @@ include ("includes/db.php");
 
 $fullname=$_POST['fullname'];
 $email=$_POST['email'];
-$password=$_POST['password'];
+$password = md5($_POST['password']);
 $tgl      = $_POST['tgl'];
 $bln      = $_POST['bulan'];
 $thn      = $_POST['tahun'];
 $tanggal  = "$thn-$bln-$tgl";
 $default_img="default.jpg";
+$api	= md5(uniqid(rand()));
 
 
 if(!empty($email)&& !empty($password)&& !empty($fullname))
@@ -23,7 +24,7 @@ if(!empty($email)&& !empty($password)&& !empty($fullname))
 	if($count==0)
 		{
 
-		$command="INSERT into users(fullname,birth,password,email,cover_img) values('$fullname','$tanggal','$password','$email','$default_img')";
+		$command="INSERT into users(fullname,birth,password,email,cover_img,api) values('$fullname','$tanggal','$password','$email','$default_img','$api')";
 		echo "$command";
 		$result=mysql_query($command);
 		mkdir("photo/$uid/foto", 0755);

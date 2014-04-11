@@ -32,8 +32,6 @@ $profile_uid=$_GET['id'];
 <script type="text/javascript" src="js/facybox.js"></script>
 <script type="text/javascript" src="js/facybox_ext.js"></script>
 <script type="text/javascript" src="js/follow_user.js"></script>
-
-    <form action="savesetting.php?id=<?php echo $p; ?>" enctype="multipart/form-data"  method="post" name="postform"> 
     
 	<title>
 <?php 
@@ -42,6 +40,7 @@ $result=mysql_query($sql);
 $exist=mysql_num_rows($result);
 if($exist==0)
 {
+echo "<html>";
 echo "</title>";
 echo "<body>";
 echo "<div>Sorry this Profile doesn't Exist</div>";
@@ -60,25 +59,6 @@ echo "$fullname";
 }
 ?>
 	</title>
-	
-	
-    <?php
-	$query=mysql_fetch_array(mysql_query("select * from users where uid='$uid'"));
-	$fullname=$query['fullname'];
-	$email=$query['email'];
-	$gender=$query['gender'];
-	$tanggal=$query['birth'];
-	
-	$religion=$query['religion'];
-	$status=$query['status'];
-	$address=$query['address'];
-	$activity=$query['activity'];
-	$hobby=$query['hobby'];
-	
-	$password=$query['password'];
-	$photo=$query['photo_profil'];
-
-	?>
 	</head>
 	
 <body>
@@ -156,123 +136,82 @@ $friend_count=mysql_num_rows($friend_sql);
 
 </div>
 </div>	
+
 	
+	    <?php
+		if($_POST['kirim'] == "Simpan")
+	{
+		$fullname = $_POST['fullname'];
+		$email = $_POST['email'];
+		
+		$sql = "UPDATE users SET fullname ='$fullname', email = '$email' WHERE uid = '$uid'";
+			mysql_query($sql);
+
+			if(mysql_errno() == 0)
+			{
+				echo"<script>alert('Data berhasil diupdate !');</script>";
+			}else{
+				echo"<script>alert('Data gagal diupdate !');</script>";
+			}
+		
+	}
 	
+	// $sqldata = "SELECT * FROM users WHERE uid = '$uid'";
+	// $result = mysql_query($sqldata);
+	// if(mysql_num_rows($result) > 0)
+	// {
+		// while($data = mysql_fetch_array($result))
+		// {
+			// $uid = $data['uid'];
+			// $fullname = $data['fullname'];
+			// $email = $data['email'];
+		// }
+	// }
+		
+		
+	$query=mysql_fetch_array(mysql_query("select * from users where uid='$uid'"));
+	$fullname=$query['fullname'];
+	$email=$query['email'];
+	// $gender=$query['gender'];
+	// $tanggal=$query['birth'];
+
+	// $religion=$query['religion'];
+	// $status=$query['status'];
+	// $address=$query['address'];
+	// $activity=$query['activity'];
+	// $hobby=$query['hobby'];
 	
+	// $aksi="savesetting.php";
+// switch($_GET[aksi]){	
+	// case "default":
+	?>
+	<form method='post' action="">
 	
+	<div id='wall_container'>
 	
-	
-	
-	<div id="wall_container">
-	
-    <table width="399" border="0">
+    <table width='399' border='0'>
     <tr>
-      <td width="113">Full Name</td>
-      <td width="1">&nbsp;</td>
-      <td width="271"><input type="text" name="fullname" value="<?php echo $fullname; ?>" size="30"/></td>
+      <td width='113'>Full Name</td>
+      <td width='1'>&nbsp;</td>
+      <td width='271'><input type='text' name='fullname' value="<?php echo"$fullname"; ?>" size='30'/></td>
+    </tr>
+	<tr>
+      <td width='113'>Email</td>
+      <td width='1'>&nbsp;</td>
+      <td width='271'><input type='text' name='email' value="<?php echo"$email"; ?>" size='30'/></td>
     </tr>
     <tr>
-      <td>Email</td>
-      <td>&nbsp;</td>
-      <td><input type="text" name="email" value="<?php echo $email; ?>" size="30"/></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td></td>
-      <td><i><font color="#CCCCCC">*kosongkan password jika tidak diubah*</font></i></td>
-    </tr>
-    <tr>
-      <td>Password</td>
-      <td>&nbsp;</td>
-      <td><input type="password" name="password" size="30"/></td>
-    </tr>
-    <tr>
-      <td>Gender</td>
-      <td>&nbsp;</td>
-      <td>
-      <select name="gender">
-        <option value="0">--Silahkan dipilih--
-        <option value="pria" <?php if($gender=='pria'){ echo "selected='selected'";} ?>>Pria
-        <option value="wanita" <?php if($gender=='wanita'){ echo "selected='selected'";} ?>>Wanita
-      </select>
-      </td>
-    </tr>
-    <tr>
-      <td>Birthday</td>
-      <td>&nbsp;</td>
-      <td><input type="text" name="tanggal" value="<?php  echo $tanggal;?>" size="25"/> <a href="javascript:void(0)" onClick="if(self.gfPop)gfPop.fPopCalendar(document.postform.tanggal);return false;" ><img name="popcal" align="absmiddle" style="border:none" src="./calender/calender.jpeg" width="34" height="29" border="0" alt=""></a></td>
-    </tr>
-     <tr>
-      <td>Religion</td>
-      <td>&nbsp;</td>
-      <td>
-      <select name="agama">
-        <option value="0">--Silahkan dipilih--
-        <option value="islam" <?php if($religion=='islam'){ echo "selected='selected'";} ?>>Islam
-        <option value="katolik" <?php if($religion=='katolik'){ echo "selected='selected'";} ?>>Katolik
-        <option value="protestan" <?php if($religion=='protestan'){ echo "selected='selected'";} ?>>Protestan
-        <option value="hindu" <?php if($religion=='hindu'){ echo "selected='selected'";} ?>>Hindu
-        <option value="budha" <?php if($religion=='budha'){ echo "selected='selected'";} ?>>Budha
-      </select>
-      </td>
-    </tr>
-    <tr>
-      <td>Status</td>
-      <td>&nbsp;</td>
-      <td>
-      <select name="status">
-        <option value="0">--Silahkan dipilih--
-        <option value="lajang" <?php if($status=='lajang'){ echo "selected='selected'";} ?>>Lajang
-        <option value="pacaran" <?php if($status=='pacaran'){ echo "selected='selected'";} ?>>Pacaran
-        <option value="menikah" <?php if($status=='menikah'){ echo "selected='selected'";} ?>>Menikah
-        <option value="lain-lain" <?php if($status=='lain-lain'){ echo "selected='selected'";} ?>>Lain-lain
-      </select>
-      </td>
-    </tr>
-    <tr>
-      <td>Address</td>
-      <td>&nbsp;</td>
-      <td>
-      <textarea cols="30" rows="5" name="address"><?php echo $address;?></textarea>
-      </td>
-    </tr>
-    <tr>
-      <td>Activity</td>
-      <td>&nbsp;</td>
-      <td>
-      <textarea cols="30" rows="5" name="activity"><?php echo $activity;?></textarea>
-      </td>
-    </tr>
-    <tr>
-      <td>Hobby</td>
-      <td>&nbsp;</td>
-      <td>
-      <textarea cols="30" rows="5" name="hobby"><?php echo $hobby;?></textarea>
-      </td>
-    </tr>
-    <tr>
-      <td></td>
-      <td></td>
-      <td><i><font color="#CCCCCC">*kosongkan photo jika tidak diubah : <?php echo $photo;?>*</font></i></td>
-    </tr>
-    <tr>
-      <td>Photo</td>
-      <td>&nbsp;</td>
-      <td><input type="file" name="photo" size="30"/></td>
-  	</tr>
-    <tr>
-      <td colspan="3"><p></p></td>
+      <td colspan='3'><p></p></td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
-      <td><input type="submit" value="Simpan"  onclick="return confirm('Apakah Anda yakin akan mengubah account?')"name="kirim" /></td>
+      <td><input type='submit' value='Simpan' name='kirim' /></td>
     </tr>
     </table>
     
     </form>
-    <p><br /></p>
-
-</div>
+	</div>
+	
 </body>
 </html>
